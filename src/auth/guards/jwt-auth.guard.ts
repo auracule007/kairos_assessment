@@ -7,14 +7,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from '../interfaces/jwt-payload.interface';
 import { UserRole } from '../../common/enums/user-role.enum';
-import { RequestUser } from '../../common/interfaces/request-user.interface';
-
-type RequestWithAuthorization = Request & {
-  headers: {
-    authorization?: string;
-  };
-  user?: RequestUser;
-};
+import { RequestWithAuthorization } from 'src/common/types/types';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {

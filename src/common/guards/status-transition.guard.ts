@@ -7,12 +7,7 @@ import {
 } from '@nestjs/common';
 import { ApplicationStatus } from '@prisma/client';
 import { UserRole } from '../enums/user-role.enum';
-import { RequestUser } from '../interfaces/request-user.interface';
-
-type RequestWithUser = Request & {
-  body: { newStatus?: ApplicationStatus };
-  user?: RequestUser;
-};
+import { RequestWithUser } from '../types/types';
 
 @Injectable()
 export class StatusTransitionGuard implements CanActivate {
