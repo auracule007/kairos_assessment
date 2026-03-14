@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ApplicationStatus {
+  APPLIED
+  INTERVIEWING
+  CONTRACTED
+  COMPLETED
+  CLOSED
+}
+
+model Application {
+  id             String            @id @default(cuid())
+  candidateEmail String
+  status         ApplicationStatus @default(APPLIED)
+  contractUrl    String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  history        StatusHistory[]
+
+  @@index([status])
+}
+
+model StatusHistory {
+  id             String            @id @default(cuid())
+  applicationId  String
+  previousStatus ApplicationStatus
+  newStatus      ApplicationStatus
+  changedBy      String
+  metadata       Json?
+  createdAt      DateTime          @default(now())
+  application    Application       @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([applicationId, createdAt])
+}
